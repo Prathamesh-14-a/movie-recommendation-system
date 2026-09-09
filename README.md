@@ -1,3 +1,4 @@
+
 # MovieMind - AI-Powered Movie Recommendation System
 
 A sophisticated content-based movie recommendation engine built with Python, Streamlit, and Machine Learning. Discover your next favorite movie with intelligent, personalized recommendations powered by cosine similarity analysis.
