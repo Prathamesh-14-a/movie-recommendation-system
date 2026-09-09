@@ -14,6 +14,7 @@ A sophisticated content-based movie recommendation engine built with Python, Str
 MovieMind uses **content-based filtering** to analyze movie characteristics (genres, keywords, cast, director, plot) and recommend similar movies using **cosine similarity**. The system pre-computes all similarity scores for instant, lightning-fast recommendations.
 
 ### Why MovieMind?
+
 - ⚡ **Instant Recommendations**: Pre-computed similarity matrix = sub-millisecond responses
 - 🎯 **Content-Based**: Works without user history or ratings
 - 🧠 **Transparent**: Recommendations based on explicit movie features
@@ -26,12 +27,14 @@ MovieMind uses **content-based filtering** to analyze movie characteristics (gen
 ## 📊 Features
 
 ### Recommendation Engine
+
 - ✅ Content-based filtering using cosine similarity
 - ✅ Pre-computed similarity matrix for instant recommendations
 - ✅ Top 5 recommendations per query
 - ✅ Similarity scores displayed (0-100%)
 
 ### User Interface
+
 - ✅ Clean, modern dark theme (Netflix-inspired)
 - ✅ Movie selection dropdown
 - ✅ Responsive 5-column layout
@@ -39,6 +42,7 @@ MovieMind uses **content-based filtering** to analyze movie characteristics (gen
 - ✅ Multiple tabs: Recommendations, Algorithm Explanation, About
 
 ### Technical Features
+
 - ✅ Streamlit caching (resource & data)
 - ✅ Robust error handling & graceful fallbacks
 - ✅ Cross-platform path handling
@@ -85,7 +89,9 @@ movie-recommendation-system/
 ### Method: Content-Based Filtering with Cosine Similarity
 
 #### Step 1: Feature Extraction
+
 For each movie, extract and combine:
+
 - **Genres**: Movie categories (Action, Drama, Sci-Fi, etc.)
 - **Keywords**: Plot keywords and themes
 - **Cast**: Top 4 main actors
@@ -93,6 +99,7 @@ For each movie, extract and combine:
 - **Overview**: Movie description
 
 #### Step 2: Text Processing
+
 - Convert to lowercase
 - Remove spaces from multi-word terms
 - Apply Porter Stemming (reduce words to root form)
@@ -100,70 +107,84 @@ For each movie, extract and combine:
 Example: "science fiction action" → "scienc fiction action"
 
 #### Step 3: Vectorization
+
 Use CountVectorizer to convert text to numeric vectors:
+
 - **Dimensions**: 5,000 (5,000 unique terms)
 - **Value**: Frequency of each term in movie features
 - Creates a 4803 × 5000 matrix (movies × features)
 
 #### Step 4: Similarity Calculation
+
 Compute cosine similarity between all movie pairs:
+
 - **Similarity Formula**: cos(θ) = (A · B) / (||A|| × ||B||)
 - **Range**: 0 (completely different) to 1 (identical)
 - **Result**: 4803 × 4803 similarity matrix (pre-computed once)
 
 #### Step 5: Recommendation
+
 For a selected movie:
+
 1. Retrieve its row in the similarity matrix
 2. Sort all movies by similarity score (descending)
 3. Return top 5 (excluding the selected movie itself)
 
 ### Why Cosine Similarity?
+
 - Works well with sparse vectors (many zeros)
 - Fast to compute
 - Interpretable (ranges 0-1)
 - Robust to vector magnitude variations
 
 ### Advantages of This Approach
-✅ **No cold-start problem**: Works for new/unknown users  
-✅ **Explainable**: Easy to understand why a movie was recommended  
-✅ **Fast**: Pre-computed matrix = instant recommendations  
-✅ **Scalable**: Can handle thousands of movies  
+
+✅ **No cold-start problem**: Works for new/unknown users
+✅ **Explainable**: Easy to understand why a movie was recommended
+✅ **Fast**: Pre-computed matrix = instant recommendations
+✅ **Scalable**: Can handle thousands of movies
 
 ### Limitations
-❌ **No collaborative signal**: Doesn't consider what similar users liked  
-❌ **No new content boost**: New movies need sufficient features  
-❌ **No diversity**: May recommend very similar movies  
+
+❌ **No collaborative signal**: Doesn't consider what similar users liked
+❌ **No new content boost**: New movies need sufficient features
+❌ **No diversity**: May recommend very similar movies
 
 ---
 
 ## 🚀 Installation & Setup
 
 ### Prerequisites
+
 - Python 3.11 or higher
 - pip (Python package manager)
 - Git (optional, for cloning)
 
 ### Step 1: Clone Repository
+
 ```bash
-git clone https://github.com/yourusername/movie-recommendation-system.git
+git clone https://github.com/Prathamesh-14-a/movie-recommendation-system.git
 cd movie-recommendation-system
 ```
 
 ### Step 2: Create Virtual Environment
 
 **Windows:**
+
 ```bash
 python -m venv venv
 venv\Scripts\activate
 ```
 
 **Mac/Linux:**
+
 ```bash
 python3 -m venv venv
 source venv/bin/activate
 ```
 
 ### Step 3: Install Dependencies
+
 ```bash
 pip install -r requirements.txt
 ```
@@ -183,6 +204,7 @@ TMDB_API_KEY=your_api_key_here
 ```
 
 #### How to Get a TMDB API Key:
+
 1. Visit [TMDB API Documentation](https://www.themoviedb.org/settings/api)
 2. Create a free account
 3. Request an API key
@@ -191,6 +213,7 @@ TMDB_API_KEY=your_api_key_here
 **Note**: Without an API key, the app will still work but show placeholder images instead of movie posters.
 
 ### Step 5: Run the Application
+
 ```bash
 streamlit run app.py
 ```
@@ -202,6 +225,7 @@ The app will open automatically in your browser at `http://localhost:8501`
 ## 📖 How to Use
 
 ### Getting Recommendations
+
 1. **Select a Movie**: Choose from the dropdown of 4,800+ movies
 2. **Click "Get Recommendations"**: The engine finds similar movies
 3. **View Results**: See 5 recommended movies with:
@@ -210,10 +234,12 @@ The app will open automatically in your browser at `http://localhost:8501`
    - Similarity score (%)
 
 ### Understanding the Algorithm
+
 - **"How It Works" Tab**: Detailed explanation of the recommendation algorithm
 - **Visual Breakdown**: Feature extraction → vectorization → similarity calculation
 
 ### About Section
+
 - Learn about the technology stack
 - View dataset statistics
 - Understand limitations
@@ -224,13 +250,17 @@ The app will open automatically in your browser at `http://localhost:8501`
 ## ⚙️ Configuration
 
 ### Streamlit Settings
+
 Edit `.streamlit/config.toml` to customize:
+
 - Theme (light/dark)
 - Page layout (wide/centered)
 - Sidebar state (auto/expanded/collapsed)
 
 ### Application Settings
+
 Edit `src/config.py` to modify:
+
 - API endpoints
 - Number of recommendations
 - Image URL endpoints
@@ -243,26 +273,31 @@ Edit `src/config.py` to modify:
 ### Project Structure
 
 **src/config.py**
+
 - Central configuration file
 - Paths, API endpoints, constants
 
 **src/data_loader.py**
+
 - Load movies DataFrame from pickle
 - Load pre-computed similarity matrix
 - Validation functions
 
 **src/recommender.py**
+
 - `MovieRecommender` class
 - Core recommendation logic
 - Movie lookup and details
 
 **src/api.py**
+
 - `TMDBClient` class
 - Fetch movie posters
 - Fetch movie metadata
 - Error handling & fallbacks
 
 **app.py**
+
 - Main Streamlit application
 - UI/UX implementation
 - Tab structure (Recommendations, How It Works, About)
@@ -271,6 +306,7 @@ Edit `src/config.py` to modify:
 ### Adding New Features
 
 #### Example: Add a Similarity Threshold Filter
+
 ```python
 # In src/recommender.py
 def recommend(self, movie_title: str, num_recommendations: int, min_similarity: float = 0.0):
@@ -279,6 +315,7 @@ def recommend(self, movie_title: str, num_recommendations: int, min_similarity: 
 ```
 
 #### Example: Add Movie Filtering by Genre
+
 ```python
 # In src/recommender.py
 def recommend_by_genre(self, movie_title: str, genre: str, num_recommendations: int):
@@ -293,17 +330,21 @@ def recommend_by_genre(self, movie_title: str, genre: str, num_recommendations: 
 ## 📊 Dataset Information
 
 ### Source
+
 **TMDB 5000 Movies Dataset**
+
 - Public dataset from The Movie Database (TMDB)
 - Contains movies released up to 2016
 
 ### Statistics
+
 - **Total Movies**: 4,803 (after cleaning)
 - **Features Used**: Genres, Keywords, Cast, Director, Overview
 - **Similarity Matrix Size**: ~200MB on disk
 - **Average Recommendations Accuracy**: ~85% user satisfaction (estimated)
 
 ### Data Preprocessing
+
 1. Merge movies + credits data
 2. Extract relevant features
 3. Handle missing values
@@ -318,28 +359,33 @@ def recommend_by_genre(self, movie_title: str, genre: str, num_recommendations: 
 ## 🐛 Troubleshooting
 
 ### "Movie not found" Error
-**Problem**: Selected movie doesn't exist in the database  
+
+**Problem**: Selected movie doesn't exist in the database
 **Solution**: Try a more common movie title from the dropdown
 
 ### Placeholder Images Instead of Posters
-**Problem**: No TMDB API key configured  
-**Solution**: 
+
+**Problem**: No TMDB API key configured**Solution**:
+
 1. Add your API key to `.env`
 2. Restart the application
 
 ### "Failed to load recommendation system"
-**Problem**: Pickle files (movies.pkl, similarity_matrics.pkl) are missing  
-**Solution**:
+
+**Problem**: Pickle files (movies.pkl, similarity_matrics.pkl) are missing**Solution**:
+
 1. Ensure you have the complete repository
 2. Re-download the pickle files from the repository
 
 ### Application Loads Slowly
-**Problem**: First load time can be 5-10 seconds  
+
+**Problem**: First load time can be 5-10 seconds
 **Solution**: This is normal. Subsequent loads use Streamlit's cache.
 
 ### Connection Timeout (TMDB API)
-**Problem**: API calls are slow or timing out  
-**Solution**:
+
+**Problem**: API calls are slow or timing out**Solution**:
+
 1. Check internet connection
 2. TMDB API might be temporarily unavailable
 3. Increase timeout in `src/api.py`
@@ -349,6 +395,7 @@ def recommend_by_genre(self, movie_title: str, genre: str, num_recommendations: 
 ## 🎯 Performance Optimization
 
 ### Caching Strategy
+
 ```python
 # Resource caching (loads once, reused across sessions)
 @st.cache_resource
@@ -362,6 +409,7 @@ def expensive_computation():
 ```
 
 ### Optimization Tips
+
 - Similarity matrix is pre-computed (no runtime computation)
 - API calls are synchronous but fast (< 1 second typical)
 - Movie DataFrame is cached in memory
@@ -372,12 +420,14 @@ def expensive_computation():
 ## 🔐 Security
 
 ### Best Practices Implemented
-✅ **Environment Variables**: API key stored in .env, not in code  
-✅ **Error Handling**: No stack traces exposed to users  
-✅ **Input Validation**: Movie titles validated against database  
-✅ **.gitignore**: .env file excluded from version control  
+
+✅ **Environment Variables**: API key stored in .env, not in code
+✅ **Error Handling**: No stack traces exposed to users
+✅ **Input Validation**: Movie titles validated against database
+✅ **.gitignore**: .env file excluded from version control
 
 ### Sensitive Information
+
 - TMDB API keys should **NEVER** be committed to Git
 - Use `.env.example` as a template
 - Add `.env` to `.gitignore` (already done)
@@ -387,6 +437,7 @@ def expensive_computation():
 ## 📈 Future Improvements
 
 ### Phase 2: Enhanced Recommendations
+
 - [ ] Collaborative filtering (user ratings)
 - [ ] Hybrid recommendation system (content + collaborative)
 - [ ] User accounts and personalization
@@ -394,6 +445,7 @@ def expensive_computation():
 - [ ] Watch history tracking
 
 ### Phase 3: Advanced Features
+
 - [ ] Advanced NLP (embeddings, transformers)
 - [ ] Real-time dataset updates
 - [ ] Trending/Popular sections
@@ -402,6 +454,7 @@ def expensive_computation():
 - [ ] Year range filtering
 
 ### Phase 4: Deployment & Scaling
+
 - [ ] Docker containerization
 - [ ] Cloud deployment (AWS, GCP, Azure)
 - [ ] Database integration (PostgreSQL)
@@ -414,6 +467,7 @@ def expensive_computation():
 ## 📝 Code Quality
 
 ### Principles Followed
+
 - ✅ **DRY** (Don't Repeat Yourself)
 - ✅ **SOLID** principles (Single Responsibility, etc.)
 - ✅ **Type Hints**: Function annotations for clarity
@@ -422,6 +476,7 @@ def expensive_computation():
 - ✅ **Clean Code**: Meaningful names, proper formatting
 
 ### Code Standards
+
 - Python 3.11+
 - PEP 8 compliant
 - Type hints throughout
@@ -449,29 +504,31 @@ This project is licensed under the MIT License. See [LICENSE](LICENSE) file for 
 ## 📞 Support & Contributing
 
 ### Report Issues
+
 Found a bug? [Open an issue on GitHub](#)
 
 ### Contribute
+
 Want to improve MovieMind? We welcome pull requests!
 
 ### Contact
-- Email: your.email@example.com
-- GitHub: [@yourusername](#)
-- Portfolio: [yourportfolio.com](#)
+
+- Email: prathmeshambulge56@gmail.com
+- GitHub: [github.com/Prathamesh-14-a](https://github.com/Prathamesh-14-a)
 
 ---
 
 ## 📊 Statistics
 
-| Metric | Value |
-|--------|-------|
-| Python Version | 3.11+ |
-| Lines of Code | ~600 |
-| Functions/Classes | 12+ |
-| Test Coverage | Manual testing |
-| Deployment Ready | ✅ Yes |
-| Documentation | ✅ Complete |
-| Error Handling | ✅ Comprehensive |
+| Metric            | Value            |
+| ----------------- | ---------------- |
+| Python Version    | 3.11+            |
+| Lines of Code     | ~600             |
+| Functions/Classes | 12+              |
+| Test Coverage     | Manual testing   |
+| Deployment Ready  | ✅ Yes           |
+| Documentation     | ✅ Complete      |
+| Error Handling    | ✅ Comprehensive |
 
 ---
 
@@ -484,6 +541,7 @@ Want to improve MovieMind? We welcome pull requests!
 ## 🎓 Learning Outcomes
 
 This project demonstrates:
+
 - Machine Learning (Cosine Similarity, vectorization)
 - Data Science (Data loading, preprocessing, feature engineering)
 - Web Development (Streamlit, UI/UX design)
