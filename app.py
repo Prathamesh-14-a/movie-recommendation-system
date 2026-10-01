@@ -267,14 +267,9 @@ def load_recommendation_system():
     try:
         movies = load_movies_data()
         similarity = load_similarity_matrix()
-
-        if movies is None or similarity is None:
-            return None
-
-        recommender = MovieRecommender(movies, similarity)
-        return recommender
+        return MovieRecommender(movies, similarity)
     except Exception as e:
-        st.error(f"Failed to load recommendation system: {e}")
+        st.error(f"❌ Failed to load recommendation system: {e}")
         return None
 
 
@@ -329,7 +324,6 @@ def main():
     # Initialize recommender
     recommender = load_recommendation_system()
     if recommender is None:
-        st.error("❌ Failed to load the recommendation system. Please check that all model files are present.")
         return
 
     tmdb_client = get_tmdb_client()
