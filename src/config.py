@@ -21,18 +21,30 @@ SIMILARITY_MATRIX_PATH = DATA_DIR / "similarity_matrics.pkl"
 
 # TMDB API Configuration - Support both Streamlit Secrets (Cloud) and .env (Local)
 def get_tmdb_api_key() -> str:
-    """Retrieve TMDB API key from Streamlit secrets (Cloud) or environment variables (Local)."""
+    """
+    Retrieve TMDB API key from:
+    1. Environment variables (e.g. from local .env via python-dotenv)
+    2. Streamlit secrets (when running on Streamlit Cloud or if secrets.toml exists)
+    """
+    # 1. Check environment variable first (from .env or cloud environment)
+    env_key = os.getenv("TMDB_API_KEY", "").strip()
+    if env_key:
+        return env_key
+
+    # 2. Check Streamlit secrets ONLY if a secrets file exists on disk
     try:
-        from streamlit.runtime.scriptrunner import get_script_run_ctx
-        if get_script_run_ctx() is not None:
-            import streamlit as st
+        from pathlib import Path
+        import streamlit as st
+        secret_files = st.config.get_option("secrets.files") or []
+        if any(Path(p).exists() for p in secret_files):
             if "TMDB_API_KEY" in st.secrets:
                 key = st.secrets["TMDB_API_KEY"]
                 if key and str(key).strip():
                     return str(key).strip()
     except Exception:
         pass
-    return os.getenv("TMDB_API_KEY", "").strip()
+
+    return ""
 
 TMDB_API_KEY = get_tmdb_api_key()
 TMDB_BASE_URL = "https://api.themoviedb.org/3/movie"
