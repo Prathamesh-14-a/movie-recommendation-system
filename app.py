@@ -340,6 +340,9 @@ def main():
     with tab1:
         render_nav("Discover")
 
+        if not tmdb_client.api_key:
+            st.info("💡 **Tip:** TMDB API key is not configured. Posters will display placeholders. Add `TMDB_API_KEY = \"...\"` in your Streamlit Cloud **Secrets** to show live movie posters.")
+
         # Hero Section
         st.markdown("""
         <div class="mm-hero">

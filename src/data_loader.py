@@ -8,7 +8,17 @@ import pandas as pd
 import numpy as np
 from pathlib import Path
 
-from .config import MOVIES_PKL_PATH, SIMILARITY_MATRIX_PATH
+from .config import MOVIES_PKL_PATH, SIMILARITY_NPZ_PATH, SIMILARITY_MATRIX_PATH
+
+
+def is_lfs_pointer(file_path: Path) -> bool:
+    """Check if a file is a Git LFS pointer text file instead of actual binary data."""
+    try:
+        with open(file_path, "rb") as f:
+            header = f.read(50)
+            return header.startswith(b"version https://git-lfs.github.com/spec/v1")
+    except Exception:
+        return False
 
 
 def load_movies_data() -> Optional[pd.DataFrame]:
@@ -23,6 +33,12 @@ def load_movies_data() -> Optional[pd.DataFrame]:
         if not MOVIES_PKL_PATH.exists():
             raise FileNotFoundError(f"Movies pickle file not found: {MOVIES_PKL_PATH}")
         
+        if is_lfs_pointer(MOVIES_PKL_PATH):
+            raise ValueError(
+                f"{MOVIES_PKL_PATH.name} is a Git LFS pointer file, not actual data. "
+                "Please run 'git lfs pull' or commit the file directly."
+            )
+
         with open(MOVIES_PKL_PATH, "rb") as f:
             movies = pickle.load(f)
         
@@ -39,20 +55,36 @@ def load_movies_data() -> Optional[pd.DataFrame]:
 
 def load_similarity_matrix() -> Optional[np.ndarray]:
     """
-    Load precomputed cosine similarity matrix from pickle file.
+    Load precomputed cosine similarity matrix.
+    Prefers compressed .npz format (29MB, fast & compatible with Git/Streamlit Cloud),
+    and falls back to .pkl if present.
     
     Returns:
         2D numpy array of shape (n_movies, n_movies) with similarity scores
         Returns None if file not found.
     """
     try:
-        if not SIMILARITY_MATRIX_PATH.exists():
-            raise FileNotFoundError(f"Similarity matrix file not found: {SIMILARITY_MATRIX_PATH}")
+        # 1. Prefer compressed NPZ format (29MB, fast, direct git tracking)
+        if SIMILARITY_NPZ_PATH.exists():
+            if is_lfs_pointer(SIMILARITY_NPZ_PATH):
+                raise ValueError(f"{SIMILARITY_NPZ_PATH.name} is a Git LFS pointer.")
+            data = np.load(SIMILARITY_NPZ_PATH)
+            return data["similarity"]
         
-        with open(SIMILARITY_MATRIX_PATH, "rb") as f:
-            similarity = pickle.load(f)
+        # 2. Fall back to PKL format
+        if SIMILARITY_MATRIX_PATH.exists():
+            if is_lfs_pointer(SIMILARITY_MATRIX_PATH):
+                raise ValueError(
+                    f"{SIMILARITY_MATRIX_PATH.name} is a Git LFS pointer. "
+                    "Use similarity_matrics.npz for cloud deployment."
+                )
+            with open(SIMILARITY_MATRIX_PATH, "rb") as f:
+                similarity = pickle.load(f)
+            return similarity
         
-        return similarity
+        raise FileNotFoundError(
+            f"Neither {SIMILARITY_NPZ_PATH.name} nor {SIMILARITY_MATRIX_PATH.name} found."
+        )
     except Exception as e:
         print(f"Error loading similarity matrix: {e}")
         return None

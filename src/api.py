@@ -4,7 +4,7 @@ TMDB API integration for fetching movie metadata and posters.
 from typing import Optional, Dict
 import requests
 
-from .config import TMDB_API_KEY, TMDB_BASE_URL, TMDB_IMAGE_BASE_URL, FALLBACK_IMAGE_URL
+from .config import TMDB_API_KEY, TMDB_BASE_URL, TMDB_IMAGE_BASE_URL, FALLBACK_IMAGE_URL, get_tmdb_api_key
 
 
 class TMDBClient:
@@ -18,9 +18,9 @@ class TMDBClient:
         Initialize TMDB client.
         
         Args:
-            api_key: TMDB API key (uses TMDB_API_KEY from config if not provided)
+            api_key: TMDB API key (uses get_tmdb_api_key from config if not provided)
         """
-        self.api_key = api_key or TMDB_API_KEY
+        self.api_key = api_key or get_tmdb_api_key()
         self.base_url = TMDB_BASE_URL
         self.image_base_url = TMDB_IMAGE_BASE_URL
         self.session = requests.Session()

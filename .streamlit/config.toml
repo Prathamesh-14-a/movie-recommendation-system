@@ -13,8 +13,4 @@ toolbarMode = "auto"
 level = "info"
 
 [server]
-port = 8501
-headless = false
-runOnSave = true
-maxUploadSize = 200
-enableCORS = true
+headless = true

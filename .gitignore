@@ -127,8 +127,10 @@ celerybeat.pid
 # SageMath parsed files
 *.sage.py
 
-# Environments
+# Environments & local files
 .env
+similarity_matrics.pkl
+movies_dict.pkl
 .ml_projects_env
 .venv
 env/

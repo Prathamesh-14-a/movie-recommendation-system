@@ -8,7 +8,7 @@ from src.api import TMDBClient
 load_dotenv()
 
 api_key = os.getenv("TMDB_API_KEY")
-print(f"API Key loaded: {'✓' if api_key else '✗'}")
+print(f"API Key loaded: {'[OK]' if api_key else '[MISSING]'}")
 print(f"API Key (first 10 chars): {api_key[:10]}..." if api_key else "No API key")
 
 # Test poster loading
